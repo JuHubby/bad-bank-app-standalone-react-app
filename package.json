@@ -1,0 +1,20 @@
+{
+  "name": "bad-bank-appminebackend",
+  "version": "1.0.0",
+  "description": "This is a banking app without security measures. It's solely a project aimed at practicing my first React app creations. The app enables users to create an account with minimal requirements and perform basic transactions such as depositing to their balance and withdrawing. However, these transactions are not connected to any specific user, serving merely as an example. I intend to continue working on this project to improve it and move towards developing a more realistic and secure banking application.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongodb": "^3.6.2",
+    "nodemon": "^3.1.2",
+    "request": "^2.88.2"
+  }
+}
