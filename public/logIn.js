@@ -8,14 +8,6 @@ function Login() {
   const [balance, setBalance] = React.useState(100);
   const [name, setName] = React.useState("");
 
-  // useEffect(() => {
-  //   fetch(`/account/all}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setData({ users: data });
-  //     });
-  // }, []);
 
   function validate(field, label) {
     if (!field) {
@@ -65,7 +57,7 @@ function Login() {
         setBalance(user.balance);
         setName(user.name);
         clearForm();
-        return user;
+        return;
       }
       setStatus(
         <>
@@ -135,10 +127,10 @@ function Login() {
             </>
           ) : (
             <>
-              <h5>Hello {name}!</h5>
+              <h1>Hello {name}!</h1>
               <p>Your current balance is:</p>
               <br />
-              <h5>${balance}</h5>
+              <h3>${balance}</h3>
               <br />
               <div className="row">
                 <div className="col">

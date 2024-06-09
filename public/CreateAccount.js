@@ -101,53 +101,45 @@ function CreateForm(props) {
 
     const url = `/account/create/${name}/${lastName}/${email}/${password}`;
 
-    const onClicks = () => {
-      fetch(url)
-        .then((res) => {
-          if (res.ok) {
-            console.log(res);
-            console.log("SUCCESS");
-            return res.json(); // Parse the response body as JSON
-          } else {
-            console.log("Not Successful");
-          }
-        })
-        .then((data) => {
-          if (data) {
-            console.log(data); // Now you have access to the data
-            props.setStatus("");
-            console.log(
-              "final values:" + name,
-              email,
-              lastName,
-              password,
-              balance
-            );
-            props.setShow(false);
-            clearForm();
-          } else {
-            console.log("Undefined data");
-          }
-        })
-        .catch((error) => {
-          console.log("ERROR");
-          props.setStatus(
-            <>
-              <span className="alert alert-danger d-flex align-items-center">
-                {" "}
-                <p>
-                  {" "}
-                  The email address is already in use. Please try another one,
-                  or log in to your existing account associated with that email.
-                </p>
-              </span>
-            </>
+    const getUsers = async () => {
+      try {
+        const response = await fetch(url);
+        if (response.status != 200) {
+          throw new Error(
+            `something went wrong, status code: ${response.status}`
           );
-          setTimeout(() => props.setStatus(""), 3000);
-        });
+        }
+        const users = await response.json();
+        return users;
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    onClicks();
+    (async () => {
+      const users = await getUsers();
+      if (users) {
+        console.log("data updated:" + JSON.stringify(users)); // Now you have access to the data
+        props.setStatus("");
+        props.setShow(false);
+        clearForm();
+        return;
+      }
+      props.setStatus(
+      <>
+        <span className="alert alert-danger d-flex align-items-center">
+          {" "}
+          <p>
+            {" "}
+            The email address is already in use. Please try another one,
+            or log in to your existing account associated with that email.
+          </p>
+        </span>
+      </>
+    );
+    setTimeout(() => props.setStatus(""), 3000);
+    })();
+
   }
 
   function clearForm() {
