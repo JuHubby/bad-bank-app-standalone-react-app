@@ -3,6 +3,7 @@ function Deposit() {
     const [status, setStatus]= React.useState("");
     const [balance, setBalance] = React.useState(0);
     const [show, setShow] = React.useState(true);
+    const ctx = React.useContext(UserContext);
 
     function validate(field, label) {
         if(!field){

@@ -22,7 +22,6 @@ function CreateAccount() {
 }
 
 function CreateForm(props) {
-  
   const [lastName, setLastName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [balance, setBalance] = React.useState(100);
@@ -30,8 +29,8 @@ function CreateForm(props) {
   const [name, setName] = React.useState("");
   const [found, setFound] = React.useState(false);
   const [data, setData] = React.useState("");
- 
-   function validate(field, label) {
+
+  function validate(field, label) {
     if (!name) {
       props.setStatus(
         <span className="alert alert-danger d-flex align-items-center">
@@ -52,8 +51,7 @@ function CreateForm(props) {
       );
       setTimeout(() => props.setStatus(""), 3000);
       return false;
-    }
-    else if (
+    } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
         password
       )
@@ -101,7 +99,6 @@ function CreateForm(props) {
     if (!validate(email, "Email")) return;
     if (!validate(password, "Password")) return;
 
-    
     const url = `/account/create/${name}/${lastName}/${email}/${password}`;
 
     const onClicks = () => {
@@ -117,7 +114,7 @@ function CreateForm(props) {
         })
         .then((data) => {
           if (data) {
-            console.log(data);
+            console.log(data); // Now you have access to the data
             props.setStatus("");
             console.log(
               "final values:" + name,
@@ -127,7 +124,7 @@ function CreateForm(props) {
               balance
             );
             props.setShow(false);
-            clearForm(); // Now you have access to the data
+            clearForm();
           } else {
             console.log("Undefined data");
           }
@@ -227,7 +224,23 @@ function CreateMsg(props) {
         <h5 className="alert alert-success">
           <p className="text-center">successfully completed.</p>
         </h5>
+        <br/>
+        <div className="container text-center">
+          
         <div className="row">
+          <div className="col">
+            <LinkPersonalizedButtonLook
+              titleButton="LogIn"
+              handleOnclick="#/login/"
+            />
+          </div>
+          </div>
+          </div>
+
+          <div className="container text-center">
+          
+        <div className="row"></div>
+          <br />
           <div className="col">
             <ButtonPersonalized
               titleButton="Create Another Account"
@@ -235,6 +248,8 @@ function CreateMsg(props) {
             />
           </div>
         </div>
+       
+       
       </>
     </>
   );

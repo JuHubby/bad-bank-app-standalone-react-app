@@ -60,19 +60,19 @@ function ButtonPersonalized(props) {
     }
 
 
-// function LinkPersonalized(props) {
-//         return (
-//             <>
-//             <div className="container text-center">
-//             <div className="row">
-//             <div className="col">
-//                 <a href={props.handleOnclick} className={`btn btn-${props.color ? props.color : defaultColor}`}>{props.titleButton}</a>
-//             </div>
-//             </div>
-//             </div>
-//             </>
-//         )
-// }
+function LinkPersonalizedButtonLook(props) {
+        return (
+            <>
+            <div className="container text-center">
+            <div className="row">
+            <div className="col">
+                <a href={props.handleOnclick} role="button" className={`btn btn-${props.color ? props.color : defaultColor}`}>{props.titleButton}</a>
+            </div>
+            </div>
+            </div>
+            </>
+        )
+}
 
 function LinkPersonalized(props) {
     return (

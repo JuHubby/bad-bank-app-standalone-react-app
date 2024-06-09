@@ -5,7 +5,8 @@ function Login() {
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [show, setShow] = React.useState(true);
-  const [balance, setBalance] = React.useState(0);
+  const [balance, setBalance] = React.useState(100);
+  const [name, setName]= React.useState("");
 
   // useEffect(() => {
   //   fetch(`/account/all}`)
@@ -57,8 +58,12 @@ function Login() {
             console.log(data); // Now you have access to the data
             setStatus("");
             setShow(false);
-            setBalance(user[0].balance);
+            setBalance(data.user[0].balance);
+            setName(data.user[0].name);
             clearForm();
+            console.log(balance);
+            return () => setData({ users: data });
+            
           } else {
             console.log("ERROR1B");
             console.log("Undefined data");
@@ -147,6 +152,7 @@ function Login() {
             </>
           ) : (
             <>
+              <h5>Hello {name}!</h5>
               <p>Your current balance is:</p>
               <br />
               <h5>${balance}</h5>
