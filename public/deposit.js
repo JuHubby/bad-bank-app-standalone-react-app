@@ -3,11 +3,10 @@ function Deposit() {
     const [status, setStatus]= React.useState("");
     const [balance, setBalance] = React.useState(0);
     const [show, setShow] = React.useState(true);
-    const ctx = React.useContext(UserContext);
 
     function validate(field, label) {
         if(!field){
-            setStatus(<span className="alert alert-danger d-flex align-items-center" > Holy guacamole! You should check in on the {label} field above.</span>);
+            setStatus(<span className="alert alert-danger d-flex align-items-center" > Holy guacamole! You should select or type an ammount on the {label} field above.</span>);
             setTimeout(() => setStatus (''), 3000);
             
             return false;
@@ -29,14 +28,7 @@ function Deposit() {
         // const balance = balancebefore + depositAmount;   
         const totalBalanceSofar = parseInt(depositAmount)+parseInt(balance)
         setBalance(totalBalanceSofar);
-        for(let i=1; i < ctx.users.length; i++ ) {
-            const keyValue = i;
-            // ctx.users[i].push({...ctx.users, keyValue});
-            setIdElement(keyValue);
-        }
-        ctx.users.push({idElement,name,email,lastName,password});
-        console.log(idElement,name,email,lastName,password);
-        setShow(false); 
+       
     }
 
     function clearForm() {

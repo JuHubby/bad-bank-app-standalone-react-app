@@ -88,6 +88,7 @@ function LinkPersonalized(props) {
     )
 }
 
+
 function FormPersonalized(props) {
     return (
         <>
@@ -97,7 +98,8 @@ function FormPersonalized(props) {
         ></input> 
         <br/>Password <br/>
         <input type="password" className="form-control" id="password" placeholder="Enter password" value={props.valuePassword} onChange={props.handleOnChangePassword}
-        ></input> <br/>
+        ></input>
+        <br/>
         
         </>
     )

@@ -47,6 +47,7 @@ app.get('/account/login/:email/:password', function (req, res) {
           if(user.length > 0){
               if (user[0].password === req.params.password){
                 console.log('user0' + user[0]);
+                console.log( user[0]);
                   res.send(user[0]);
               }
               else{

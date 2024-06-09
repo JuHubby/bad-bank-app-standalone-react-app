@@ -1,8 +1,20 @@
 function Login() {
+  const { useEffect } = React;
+  const [data, setData] = React.useState("");
   const [status, setStatus] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [show, setShow] = React.useState(true);
+  const [balance, setBalance] = React.useState(0);
+
+  // useEffect(() => {
+  //   fetch(`/account/all}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       setData({ users: data });
+  //     });
+  // }, []);
 
   function validate(field, label) {
     if (!field) {
@@ -27,30 +39,6 @@ function Login() {
     if (!validate(password, "Password")) return;
 
     const url = `/account/login/${email}/${password}`;
-    // (async () => {
-    //   fetch(url)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //       setData({ user: data });
-    //     });
-    // })();
-
-    // console.log("data:" + data);
-    // if (data.user.password != password) {
-    //   setStatus(
-    //     <span className="alert alert-danger d-flex align-items-center">
-    //       {" "}
-    //       <strong> Holy guacamole! </strong>
-    //       Either your email or password are not correct!
-    //     </span>
-    //   );
-    //   setTimeout(() => setStatus(""), 3000);
-    //   return false;
-    // }
-
-    // setShow(false);
-    // clearForm();
 
     const onClicks = () => {
       fetch(url)
@@ -64,42 +52,55 @@ function Login() {
           }
         })
         .then((data) => {
-          
           if (data) {
             console.log("ERROR1");
             console.log(data); // Now you have access to the data
             setStatus("");
             setShow(false);
-            clearForm(); 
+            setBalance(user[0].balance);
+            clearForm();
           } else {
-            console.log("ERROR1b");
+            console.log("ERROR1B");
             console.log("Undefined data");
           }
         })
+        
         .catch((error) => {
           console.log("ERROR2");
-          setStatus(
+        });
+
+         setStatus(
             <>
               <span className="alert alert-danger d-flex align-items-center">
                 {" "}
                 <p>
                   {" "}
-                  Login failed: User or password not recognized. Please retry or register for a new account if you're not already part of our awesome Bank.
+                  Login failed: User or password not recognized. Please retry or
+                  register for a new account if you're not already part of our
+                  awesome Bank.
                 </p>
               </span>
             </>
           );
           setTimeout(() => setStatus(""), 3000);
-        });
-    };
+
+        };
+       
+        
+  
 
     onClicks();
-  }
+    
+   
+}
 
   function clearForm() {
     setEmail("");
     setPassword("");
   }
+
+ 
+
   return (
     <>
       <h1>login</h1>
@@ -148,12 +149,14 @@ function Login() {
             <>
               <p>Your current balance is:</p>
               <br />
-              {/* I want to link this to balance context or prop variable */}
-              <h5>$2500</h5>
+              <h5>${balance}</h5>
               <br />
               <div className="row">
                 <div className="col">
-                  <LinkPersonalized titleButton="Sign out" handleOnclick="#" />
+                  <LinkPersonalized
+                    titleButton="Sign out"
+                    handleOnclick="#/"
+                  />
                 </div>
               </div>
             </>
