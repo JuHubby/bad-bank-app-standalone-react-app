@@ -1,9 +1,29 @@
 //spa for single-page application
 function Spa () {
+const [user, setUser] = React.useState({ name: '', email:'', password:'', auth: false });
+      
+const login = (name,email, password) => {
+    setUser((user) => ({
+    name: name,
+    email: email,
+    password: password,
+    auth: true,
+    }));
+};
+
+const logout = () => {
+    setUser((user) => ({
+    name: '',
+    email: '',
+    password: '',
+    auth: false,
+    }));
+};
+    
     return  (
         <HashRouter>
             <NavBar/>
-            <UserContext.Provider value={{users: [{idUser:1, name:'Julieth', lastName:'Becerra', email:'Julieth@mit.edu', password:'bigsecret', balance:100}]}}>
+            <UserContext.Provider value={{ user, login, logout }}>
                 <Route path="/" exact component={Home}/>
                 <Route path="/CreateAccount/" component={CreateAccount}/>
                 <Route path="/login/" component={Login}/>

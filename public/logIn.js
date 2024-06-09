@@ -2,11 +2,14 @@ function Login() {
   const { useEffect } = React;
   const [data, setData] = React.useState("");
   const [status, setStatus] = React.useState("");
+  const [balance, setBalance] = React.useState(100);
+  const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [show, setShow] = React.useState(true);
-  const [balance, setBalance] = React.useState(100);
-  const [name, setName] = React.useState("");
+  const { user } = React.useContext(UserContext);
+  const { login } = React.useContext(UserContext);
+  const ctx = React.useContext(UserContext);
 
 
   function validate(field, label) {
@@ -19,14 +22,14 @@ function Login() {
         </span>
       );
       setTimeout(() => setStatus(""), 3000);
-
       return false;
     }
-
     return true;
   }
-
-  function handleLogIn() {
+  function handleLogIn(e) {
+    
+    e.preventDefault();
+    console.log(user.auth);
     console.log(email, password);
     if (!validate(email, "Email")) return;
     if (!validate(password, "Password")) return;
@@ -41,24 +44,30 @@ function Login() {
             `something went wrong, status code: ${response.status}`
           );
         }
-        const user = await response.json();
-        return user;
+        const userData = await response.json();
+        return userData;
       } catch (err) {
         console.log(err);
       }
     };
 
     (async () => {
-      const user = await getUser();
-      if (user) {
-        console.log("data updated:" + JSON.stringify(user));
+      const userData = await getUser();
+      if (userData) {
+        console.log("data updated:" + JSON.stringify(userData));
+        var name =userData.name; //it helps with the delay of usestate
         setStatus("");
         setShow(false);
-        setBalance(user.balance);
-        setName(user.name);
+        setEmail(() => userData.email);
+        setPassword(() => userData.password);
+        setBalance(() => userData.balance);
+        setName(() => userData.name);
+        login(name, email, password);
         clearForm();
-        return;
+        
+        return; //important
       }
+
       setStatus(
         <>
           <span className="alert alert-danger d-flex align-items-center">
@@ -83,7 +92,7 @@ function Login() {
 
   return (
     <>
-      <h1>login</h1>
+      <h1>login {JSON.stringify(ctx)}</h1>
       <CardPersonalized
         header="Log into your Account"
         nameButton="Save"
@@ -91,7 +100,9 @@ function Login() {
         textCenter="true"
         status={status}
         body={
-          show ? (
+          show == false && user.auth ? (
+            <LogInAuth name={name} balance={balance} />
+          ) : (
             <>
               <FormPersonalized
                 valueEmail={email}
@@ -125,22 +136,34 @@ function Login() {
                 </div>
               </div>
             </>
-          ) : (
-            <>
-              <h1>Hello {name}!</h1>
-              <p>Your current balance is:</p>
-              <br />
-              <h3>${balance}</h3>
-              <br />
-              <div className="row">
-                <div className="col">
-                  <LinkPersonalized titleButton="Sign out" handleOnclick="#/" />
-                </div>
-              </div>
-            </>
           )
         }
       />
+    </>
+  );
+}
+
+function LogInAuth(props) {
+  const { user, logout } = React.useContext(UserContext);
+  console.log(user.auth);
+  console.log(user.name);
+  console.log(props.balance);
+
+  return (
+    <>
+      <h1>Hello {user.name}!</h1>
+      <p>Your current balance is:</p>
+      <br />
+      <h3>${props.balance}</h3>
+      <br />
+      <div className="row">
+        <div className="col">
+          <ButtonPersonalized
+            titleButton="Logout"
+            handleOnclick={() => logout()}
+          />
+        </div>
+      </div>
     </>
   );
 }
