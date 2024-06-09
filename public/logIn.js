@@ -6,7 +6,7 @@ function Login() {
   const [email, setEmail] = React.useState("");
   const [show, setShow] = React.useState(true);
   const [balance, setBalance] = React.useState(100);
-  const [name, setName]= React.useState("");
+  const [name, setName] = React.useState("");
 
   // useEffect(() => {
   //   fetch(`/account/all}`)
@@ -41,70 +41,53 @@ function Login() {
 
     const url = `/account/login/${email}/${password}`;
 
-    const onClicks = () => {
-      fetch(url)
-        .then((res) => {
-          if (res.ok) {
-            console.log(res);
-            console.log("SUCCESS");
-            return res.json(); // Parse the response body as JSON
-          } else {
-            console.log("Not Successful");
-          }
-        })
-        .then((data) => {
-          if (data) {
-            console.log("ERROR1");
-            console.log(data); // Now you have access to the data
-            setStatus("");
-            setShow(false);
-            setBalance(data.user[0].balance);
-            setName(data.user[0].name);
-            clearForm();
-            console.log(balance);
-            return () => setData({ users: data });
-            
-          } else {
-            console.log("ERROR1B");
-            console.log("Undefined data");
-          }
-        })
-        
-        .catch((error) => {
-          console.log("ERROR2");
-        });
-
-         setStatus(
-            <>
-              <span className="alert alert-danger d-flex align-items-center">
-                {" "}
-                <p>
-                  {" "}
-                  Login failed: User or password not recognized. Please retry or
-                  register for a new account if you're not already part of our
-                  awesome Bank.
-                </p>
-              </span>
-            </>
+    const getUser = async () => {
+      try {
+        const response = await fetch(url);
+        if (response.status != 200) {
+          throw new Error(
+            `something went wrong, status code: ${response.status}`
           );
-          setTimeout(() => setStatus(""), 3000);
+        }
+        const user = await response.json();
+        return user;
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-        };
-       
-        
-  
-
-    onClicks();
-    
-   
-}
+    (async () => {
+      const user = await getUser();
+      if (user) {
+        console.log("data updated:" + JSON.stringify(user));
+        setStatus("");
+        setShow(false);
+        setBalance(user.balance);
+        setName(user.name);
+        clearForm();
+        return user;
+      }
+      setStatus(
+        <>
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <p>
+              {" "}
+              Login failed: User or password not recognized. Please retry or
+              register for a new account if you're not already part of our
+              awesome Bank.
+            </p>
+          </span>
+        </>
+      );
+      setTimeout(() => setStatus(""), 3000);
+    })();
+  }
 
   function clearForm() {
     setEmail("");
     setPassword("");
   }
-
- 
 
   return (
     <>
@@ -159,10 +142,7 @@ function Login() {
               <br />
               <div className="row">
                 <div className="col">
-                  <LinkPersonalized
-                    titleButton="Sign out"
-                    handleOnclick="#/"
-                  />
+                  <LinkPersonalized titleButton="Sign out" handleOnclick="#/" />
                 </div>
               </div>
             </>
