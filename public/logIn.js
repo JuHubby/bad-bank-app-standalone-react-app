@@ -1,10 +1,8 @@
 function Login() {
-  const [data, setData] = React.useState("");
   const [status, setStatus] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [show, setShow] = React.useState(true);
-  const { useEffect } = React;
 
   function validate(field, label) {
     if (!field) {
@@ -19,8 +17,7 @@ function Login() {
 
       return false;
     }
-    //validacion si idELement exists in te object array, however idElement is from other componet
-    // if(ctx.users.includes(idElement) )return true;
+
     return true;
   }
 
@@ -29,37 +26,79 @@ function Login() {
     if (!validate(email, "Email")) return;
     if (!validate(password, "Password")) return;
 
-    const url = `/account/logIn/${email}`;
-    (async () => {
+    const url = `/account/login/${email}/${password}`;
+    // (async () => {
+    //   fetch(url)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log(data);
+    //       setData({ user: data });
+    //     });
+    // })();
+
+    // console.log("data:" + data);
+    // if (data.user.password != password) {
+    //   setStatus(
+    //     <span className="alert alert-danger d-flex align-items-center">
+    //       {" "}
+    //       <strong> Holy guacamole! </strong>
+    //       Either your email or password are not correct!
+    //     </span>
+    //   );
+    //   setTimeout(() => setStatus(""), 3000);
+    //   return false;
+    // }
+
+    // setShow(false);
+    // clearForm();
+
+    const onClicks = () => {
       fetch(url)
-        .then((response) => response.json())
+        .then((res) => {
+          if (res.ok) {
+            console.log(res);
+            console.log("SUCCESS");
+            return res.json(); // Parse the response body as JSON
+          } else {
+            console.log("Not Successful");
+          }
+        })
         .then((data) => {
-          console.log(data);
-          setData({ user: data });
+          
+          if (data) {
+            console.log("ERROR1");
+            console.log(data); // Now you have access to the data
+            setStatus("");
+            setShow(false);
+            clearForm(); 
+          } else {
+            console.log("ERROR1b");
+            console.log("Undefined data");
+          }
+        })
+        .catch((error) => {
+          console.log("ERROR2");
+          setStatus(
+            <>
+              <span className="alert alert-danger d-flex align-items-center">
+                {" "}
+                <p>
+                  {" "}
+                  Login failed: User or password not recognized. Please retry or register for a new account if you're not already part of our awesome Bank.
+                </p>
+              </span>
+            </>
+          );
+          setTimeout(() => setStatus(""), 3000);
         });
-    })();
+    };
 
-    console.log("data:" + data);
-    if (data.user.password != password) {
-      setStatus(
-        <span className="alert alert-danger d-flex align-items-center">
-          {" "}
-          <strong> Holy guacamole! </strong>
-          Either your email or password are not correct!
-        </span>
-      );
-      setTimeout(() => setStatus(""), 3000);
-      return false;
-    }
-
-    setShow(false);
-    clearForm();
+    onClicks();
   }
 
   function clearForm() {
     setEmail("");
     setPassword("");
-    setShow(true);
   }
   return (
     <>
@@ -88,11 +127,17 @@ function Login() {
                       titleButton="LogIn"
                       handleOnclick={handleLogIn}
                     />
-                    <br/>
+                    <br />
                     <div className="col">
                       <LinkPersonalized
                         titleButton="Forgot your password?"
                         handleOnclick="#/login/"
+                      />
+                    </div>
+                    <div className="col">
+                      <LinkPersonalized
+                        titleButton="Sig In"
+                        handleOnclick="#/CreateAccount/"
                       />
                     </div>
                   </div>
