@@ -1,7 +1,5 @@
 function Deposit() {
-  const [depositAmount, setDepositAmount] = React.useState("");
   const [status, setStatus] = React.useState("");
-  const [balance, setBalance] = React.useState(0);
   const [show, setShow] = React.useState(true);
   const { login } = React.useContext(UserContext);
   const [name, setName] = React.useState();
@@ -9,9 +7,66 @@ function Deposit() {
   const [email, setEmail] = React.useState("");
   const ctx = React.useContext(UserContext);
 
-  function validate(field, label) {
+  return (
+    <>
+      <h2>Deposit {JSON.stringify(ctx)}</h2>
+      <CardPersonalized
+        wide="50"
+        header=" Please, Log in! "
+        text="To deposit funds, you must first log in to your account."
+        nameButton="Save"
+        center="true"
+        status={status}
+        body={
+          show ? (
+            <>
+              <h1>Please, Log in! </h1>
+              <p>To deposit funds, you must first log in to your account.</p>
+              <div className="container text-center">
+                <div className="row">
+                  <div className="col">
+                    <LinkPersonalizedButtonLook
+                      titleButton="LogIn"
+                      handleOnclick="#/login/"
+                    />
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div className="container text-center">
+                <div className="row">
+                  <br />
+                  <p>
+                    If you're not part of the crew yet, create your own account
+                    and join us!
+                  </p>
+                  <div className="col">
+                    <LinkPersonalized
+                      titleButton="Sig In"
+                      handleOnclick="#/CreateAccount/"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <DepositAuth setShow={setShow} name={name} setStatus={setStatus} />
+          )
+        }
+      />
+    </>
+  );
+}
+
+function DepositAuth() {
+  const { user, logout } = React.useContext(UserContext);
+  const { display, setDisplay } = React.useState(true);
+  const [balance, setBalance] = React.useState(0);
+  const [depositAmount, setDepositAmount] = React.useState("");
+
+  function validate(field, label, props) {
     if (!field) {
-      setStatus(
+      props.setStatus(
         <span className="alert alert-danger d-flex align-items-center">
           {" "}
           Holy guacamole! You should select or type an ammount on the {
@@ -20,19 +75,19 @@ function Deposit() {
           field above.
         </span>
       );
-      setTimeout(() => setStatus(""), 3000);
+      setTimeout(() => props.setStatus(""), 3000);
 
       return false;
     }
     if (field <= 0) {
-      setStatus(
+      props.setStatus(
         <span className="alert alert-danger d-flex align-items-center">
           {" "}
           Ups! You're not able to deposit a negative amount. Please choose a
           positive number.
         </span>
       );
-      setTimeout(() => setStatus(""), 3000);
+      setTimeout(() => props.setStatus(""), 3000);
       return false;
     }
     return true;
@@ -48,114 +103,82 @@ function Deposit() {
     const url = `/account/update/${email}/${amount}`;
   }
 
-  function clearForm() {
+  function clearForm(props) {
     setDepositAmount("");
-    setShow(true);
+    props.setShow(true);
   }
 
   return (
     <>
-      <h2>Deposit {JSON.stringify(ctx)}</h2>
-      <CardPersonalized
-        wide="50"
-        header=" Please, Log in! "
-        text="To deposit funds, you must first log in to your account."
-        nameButton="Save"
-        center="true"
-        status={status}
-        body={
-          show ? (
-            <>
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <LinkPersonalizedButtonLook
-                      titleButton="LogIn"
-                      handleOnclick="#/login/"
-                    />
-                  </div>
-                </div>
+      {" "}
+      {display ? (
+        <>
+          {" "}
+          <h1>Hello {user.name}!</h1>
+          <p>Your current balance is:</p>
+          <br />
+          <h3>${balance}</h3>
+          <br />
+          <div className="container text-center">
+            <div className="row">
+              <div className="col">
+                <h5>Balance</h5>
               </div>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <br />
-                  <p>If you're not part of the crew yet, create your own account and join us!</p>
-                  <div className="col">
-                    <LinkPersonalized
-                      titleButton="Sig In"
-                      handleOnclick="#/CreateAccount/"
-                    />
-                  </div>
-                </div>
+              <div className="col">
+                <h5>{"$ " + balance}</h5>
               </div>
-            </>
-          ) : (
-            <>
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Balance</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + balance}</h5>
-                  </div>
-                </div>
+            </div>
+          </div>
+          Deposit Amount <br />
+          <input
+            type="number"
+            className="form-control"
+            id="depositAmount"
+            placeholder="Enter Amount"
+            value={depositAmount}
+            onChange={(e) => setDepositAmount(e.currentTarget.value)}
+          ></input>{" "}
+          <br />
+          <div className="container text-center">
+            <div className="row">
+              <div className="col">
+                <ButtonPersonalized
+                  titleButton="Deposit"
+                  handleOnclick={handleDeposit}
+                />
               </div>
-              Deposit Amount <br />
-              <input
-                type="number"
-                className="form-control"
-                id="depositAmount"
-                placeholder="Enter Amount"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.currentTarget.value)}
-              ></input>{" "}
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <ButtonPersonalized
-                      titleButton="Deposit"
-                      handleOnclick={handleDeposit}
-                    />
-                  </div>
-                </div>
+            </div>
+          </div>{" "}
+        </>
+      ) : (
+        <>
+          {/* add emoji happy */}
+          {/* <i className="bi bi-emoji-smile"></i> */}
+          <h5 className="alert alert-success text-center">
+            The deposit was successful.
+          </h5>
+          <br />
+          <div className="container text-center">
+            <div className="row">
+              <div className="col">
+                <h5>Your new balance is:</h5>
               </div>
-            </>
-          )
-        }
-      />
+              <div className="col">
+                <h5>{"$ " + balance}</h5>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <ButtonPersonalized
+                titleButton="Make a new deposit."
+                handleOnclick={clearForm}
+              />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
-
-// ) : (
-//     <>
-//       {/* add emoji happy */}
-//       {/* <i className="bi bi-emoji-smile"></i> */}
-//       <h5 className="alert alert-success text-center">
-//         The deposit was successful.
-//       </h5>
-//       <br />
-//       <div className="container text-center">
-//         <div className="row">
-//           <div className="col">
-//             <h5>Your new balance is:</h5>
-//           </div>
-//           <div className="col">
-//             <h5>{"$ " + balance}</h5>
-//           </div>
-//         </div>
-//       </div>
-//       <br />
-//       <div className="row">
-//         <div className="col">
-//           <ButtonPersonalized
-//             titleButton="Make a new deposit."
-//             handleOnclick={clearForm}
-//           />
-//         </div>
-//       </div>
-//     </>
-//   )
