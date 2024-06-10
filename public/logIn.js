@@ -6,11 +6,9 @@ function Login() {
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [show, setShow] = React.useState(true);
   const { user } = React.useContext(UserContext);
   const { login } = React.useContext(UserContext);
   const ctx = React.useContext(UserContext);
-
 
   function validate(field, label) {
     if (!field) {
@@ -27,7 +25,6 @@ function Login() {
     return true;
   }
   function handleLogIn(e) {
-    
     e.preventDefault();
     console.log(user.auth);
     console.log(email, password);
@@ -55,16 +52,15 @@ function Login() {
       const userData = await getUser();
       if (userData) {
         console.log("data updated:" + JSON.stringify(userData));
-        var name =userData.name; //it helps with the delay of usestate
+        var name = userData.name; //it helps with the delay of usestate
         setStatus("");
-        setShow(false);
         setEmail(() => userData.email);
         setPassword(() => userData.password);
         setBalance(() => userData.balance);
         setName(() => userData.name);
         login(name, email, password);
         clearForm();
-        
+
         return; //important
       }
 
@@ -100,7 +96,7 @@ function Login() {
         textCenter="true"
         status={status}
         body={
-          show == false && user.auth ? (
+          user.auth ? (
             <LogInAuth name={name} balance={balance} />
           ) : (
             <>
