@@ -19,7 +19,7 @@ function CardPersonalized(props) {
         <div className="container ">
             <div className="row">
                 <div className="col text-center">
-                    <div className={`card text-ligth  mb-3 border border-${props.hdColor ? props.hdColor : defaultColor} ${props.center == "true" ? "m-auto" :" " } float-none ${props.hdColor ? `w-${props.wide}` : ''} `} style={{ width: '18rem' }}>
+                    <div className={`card text-ligth  mb-3 border border-${props.hdColor ? props.hdColor : defaultColor} ${props.center == "true" ? "m-auto" :" " } float-none ${props.hdColor ? `w-${props.wide}` : ''} `} style={{ width: "18rem"}}>
                         <div className={classes()}><h5>{props.header}</h5></div>
                         <div className="card-body">  
                             <div className={`col text-${props.textCenter =="true" ? "center" : "start"}`}>

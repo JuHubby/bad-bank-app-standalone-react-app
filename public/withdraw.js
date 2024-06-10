@@ -52,7 +52,6 @@ function Withdraw() {
         <>
             <h1>Withdraw {JSON.stringify(ctx)}</h1>
             <CardPersonalized
-             wide="20"
              header="Withdraw"
              center="true"
              hdColor="danger"

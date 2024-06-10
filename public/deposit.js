@@ -1,7 +1,8 @@
 function Deposit() {
   const [status, setStatus] = React.useState("");
   const [show, setShow] = React.useState(true);
-  const { login } = React.useContext(UserContext);
+  //   const { login } = React.useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const [name, setName] = React.useState();
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -9,51 +10,45 @@ function Deposit() {
 
   return (
     <>
-      <h2>Deposit {JSON.stringify(ctx)}</h2>
-      <CardPersonalized
-        wide="50"
-        header=" Please, Log in! "
-        text="To deposit funds, you must first log in to your account."
-        nameButton="Save"
-        center="true"
-        status={status}
-        body={
-          show ? (
-            <>
-              <h1>Please, Log in! </h1>
-              <p>To deposit funds, you must first log in to your account.</p>
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <LinkPersonalizedButtonLook
-                      titleButton="LogIn"
-                      handleOnclick="#/login/"
-                    />
-                  </div>
+      <p>Context share {JSON.stringify(ctx)}</p>
+
+      {user.auth ? (
+        <DepositAuth setShow={setShow} name={name} setStatus={setStatus} />
+      ) : (
+        <>
+          <div className="container ">
+            <div className="row">
+              <div className="col text-center">
+                <div className="card">
+                  <div className="card-header">Please, Log in!</div>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
+                      <div className="card">
+                        <div className="card-body">
+                          To deposit funds, you must first log in to your
+                          account. If you're not part of the crew yet, create
+                          your own account and join us!
+                        </div>
+                        <LinkPersonalizedButtonLook
+                          titleButton="LogIn"
+                          handleOnclick="#/login/"
+                        />
+                        <br />
+                      </div>
+                    </li>
+                    <li className="list-group-item">
+                      <LinkPersonalized
+                        titleButton="or Sig In!"
+                        handleOnclick="#/CreateAccount/"
+                      />
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <br />
-                  <p>
-                    If you're not part of the crew yet, create your own account
-                    and join us!
-                  </p>
-                  <div className="col">
-                    <LinkPersonalized
-                      titleButton="Sig In"
-                      handleOnclick="#/CreateAccount/"
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <DepositAuth setShow={setShow} name={name} setStatus={setStatus} />
-          )
-        }
-      />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -110,75 +105,83 @@ function DepositAuth() {
 
   return (
     <>
-      {" "}
-      {display ? (
-        <>
-          {" "}
-          <h1>Hello {user.name}!</h1>
-          <p>Your current balance is:</p>
-          <br />
-          <h3>${balance}</h3>
-          <br />
-          <div className="container text-center">
-            <div className="row">
-              <div className="col">
-                <h5>Balance</h5>
+      <h1>Hello {user.name}!</h1>
+      <CardPersonalized
+        header=" Deposit "
+        text="Welcome to your Bank!"
+        nameButton="Save"
+        center="true"
+        status={status}
+        body={
+          display ? (
+            <>
+              {" "}
+              <p>Your current balance is:</p>
+              <br />
+              <h3>${balance}</h3>
+              <br />
+              <div className="container text-center">
+                <div className="row">
+                  <div className="col">
+                    <h5>Balance</h5>
+                  </div>
+                  <div className="col">
+                    <h5>{"$ " + balance}</h5>
+                  </div>
+                </div>
               </div>
-              <div className="col">
-                <h5>{"$ " + balance}</h5>
+              Deposit Amount <br />
+              <input
+                type="number"
+                className="form-control"
+                id="depositAmount"
+                placeholder="Enter Amount"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.currentTarget.value)}
+              ></input>{" "}
+              <br />
+              <div className="container text-center">
+                <div className="row">
+                  <div className="col">
+                    <ButtonPersonalized
+                      titleButton="Deposit"
+                      handleOnclick={handleDeposit}
+                    />
+                  </div>
+                </div>
+              </div>{" "}
+            </>
+          ) : (
+            <>
+              {/* add emoji happy */}
+              {/* <i className="bi bi-emoji-smile"></i> */}
+              <h5 className="alert alert-success text-center">
+                The deposit was successful.
+              </h5>
+              <br />
+              <div className="container text-center">
+                <div className="row">
+                  <div className="col">
+                    <h5>Your new balance is:</h5>
+                  </div>
+                  <div className="col">
+                    <h5>{"$ " + balance}</h5>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          Deposit Amount <br />
-          <input
-            type="number"
-            className="form-control"
-            id="depositAmount"
-            placeholder="Enter Amount"
-            value={depositAmount}
-            onChange={(e) => setDepositAmount(e.currentTarget.value)}
-          ></input>{" "}
-          <br />
-          <div className="container text-center">
-            <div className="row">
-              <div className="col">
-                <ButtonPersonalized
-                  titleButton="Deposit"
-                  handleOnclick={handleDeposit}
-                />
+              <br />
+              <div className="row">
+                <div className="col">
+                  <ButtonPersonalized
+                    titleButton="Make a new deposit."
+                    handleOnclick={clearForm}
+                  />
+                </div>
               </div>
-            </div>
-          </div>{" "}
-        </>
-      ) : (
-        <>
-          {/* add emoji happy */}
-          {/* <i className="bi bi-emoji-smile"></i> */}
-          <h5 className="alert alert-success text-center">
-            The deposit was successful.
-          </h5>
-          <br />
-          <div className="container text-center">
-            <div className="row">
-              <div className="col">
-                <h5>Your new balance is:</h5>
-              </div>
-              <div className="col">
-                <h5>{"$ " + balance}</h5>
-              </div>
-            </div>
-          </div>
-          <br />
-          <div className="row">
-            <div className="col">
-              <ButtonPersonalized
-                titleButton="Make a new deposit."
-                handleOnclick={clearForm}
-              />
-            </div>
-          </div>
-        </>
-      )}
+            </>
+          )
+        }
+      />
     </>
   );
 }
