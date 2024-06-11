@@ -89,16 +89,25 @@ function Login() {
   return (
     <>
       <h1>login {JSON.stringify(ctx)}</h1>
-      <CardPersonalized
-        header="Log into your Account"
-        nameButton="Save"
-        hdColor="dark"
-        textCenter="true"
-        status={status}
-        body={
-          user.auth ? (
-            <LogInAuth name={name} balance={balance} />
-          ) : (
+      {user.auth ? (
+        <CardPersonalized
+          wide="100"
+          header="Log into your Account"
+          nameButton="Save"
+          hdColor="dark"
+          status={status}
+          textcenter="true"
+          body={<LogInAuth name={name} balance={balance} />}
+        />
+      ) : (
+        <CardPersonalized
+          wide="30"
+          header="Log into your Account"
+          nameButton="Save"
+          hdColor="dark"
+          status={status}
+          textcenter="true"
+          body={
             <>
               <FormPersonalized
                 valueEmail={email}
@@ -132,9 +141,9 @@ function Login() {
                 </div>
               </div>
             </>
-          )
-        }
-      />
+          }
+        />
+      )}
     </>
   );
 }
@@ -148,16 +157,41 @@ function LogInAuth(props) {
   return (
     <>
       <h1>Hello {user.name}!</h1>
-      <p>Your current balance is:</p>
-      <br />
-      <h3>${props.balance}</h3>
-      <br />
+      <div className="container text-center">
+        <div className="row">
+          <div className="col">
+            <h5>Balance</h5>
+          </div>
+          <div className="col">
+            <h5>{"$ " + props.balance}</h5>
+          </div>
+        </div>
+      </div>
       <div className="row">
         <div className="col">
           <ButtonPersonalized
             titleButton="Logout"
             handleOnclick={() => logout()}
           />
+
+          <div className="row">
+            <div className="col-sm-6 mb-3 mb-sm-0">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Special title treatment</h5>
+                  <DepositAuth />
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Special title treatment</h5>
+                  aqui
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

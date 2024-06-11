@@ -1,12 +1,13 @@
 //spa for single-page application
 function Spa () {
-const [user, setUser] = React.useState({ name: '', email:'', password:'', auth: false });
+const [user, setUser] = React.useState({ name: '', email:'', password:'', balance: 0, auth: false });
       
-const login = (name,email, password) => {
+const login = (name, email, password, balance) => {
     setUser((user) => ({
     name: name,
     email: email,
     password: password,
+    balance: balance,
     auth: true,
     }));
 };
@@ -16,6 +17,7 @@ const logout = () => {
     name: '',
     email: '',
     password: '',
+    balance: '',
     auth: false,
     }));
 };

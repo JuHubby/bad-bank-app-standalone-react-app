@@ -5,10 +5,11 @@ function CreateAccount() {
   return (
     <CardPersonalized
       wide="50"
+      textcenter="true"
+      center="true"
       header=" Account Creation "
       nameButton="Save"
       hdColor="info"
-      center="true"
       status={status}
       body={
         show ? (
@@ -126,20 +127,19 @@ function CreateForm(props) {
         return;
       }
       props.setStatus(
-      <>
-        <span className="alert alert-danger d-flex align-items-center">
-          {" "}
-          <p>
+        <>
+          <span className="alert alert-danger d-flex align-items-center">
             {" "}
-            The email address is already in use. Please try another one,
-            or log in to your existing account associated with that email.
-          </p>
-        </span>
-      </>
-    );
-    setTimeout(() => props.setStatus(""), 3000);
+            <p>
+              {" "}
+              The email address is already in use. Please try another one, or
+              log in to your existing account associated with that email.
+            </p>
+          </span>
+        </>
+      );
+      setTimeout(() => props.setStatus(""), 3000);
     })();
-
   }
 
   function clearForm() {
@@ -216,32 +216,29 @@ function CreateMsg(props) {
         <h5 className="alert alert-success">
           <p className="text-center">successfully completed.</p>
         </h5>
-        <br/>
+        <br />
         <div className="container text-center">
-          
-        <div className="row">
-          <div className="col">
-            <LinkPersonalizedButtonLook
-              titleButton="LogIn"
-              handleOnclick="#/login/"
-            />
-          </div>
-          </div>
-          </div>
-
-          <div className="container text-center">
-          
-        <div className="row"></div>
-          <br />
-          <div className="col">
-            <ButtonPersonalized
-              titleButton="Create Another Account"
-              handleOnclick={() => props.setShow(true)}
-            />
+          <div className="row">
+            <div className="col">
+              <LinkPersonalizedButtonLook
+                titleButton="LogIn"
+                handleOnclick="#/login/"
+              />
+            </div>
           </div>
         </div>
-       
-       
+
+        <div className="container text-center">
+          <div className="row">
+            <br />
+            <div className="col">
+              <ButtonPersonalized
+                titleButton="Create Another Account"
+                handleOnclick={() => props.setShow(true)}
+              />
+            </div>
+          </div>
+        </div>
       </>
     </>
   );

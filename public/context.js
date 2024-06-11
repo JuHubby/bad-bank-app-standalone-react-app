@@ -3,7 +3,7 @@ const Link = ReactRouterDOM.Link;
 const HashRouter = ReactRouterDOM.HashRouter;
 
 // const UserContext = React.createContext(null);
-const UserContext = React.createContext({ name: '', email:'', password:'', auth: false });
+const UserContext = React.createContext({ name: '', email:'', password:'', balance:0,  auth: false });
 
 const defaultColor = "success";
 

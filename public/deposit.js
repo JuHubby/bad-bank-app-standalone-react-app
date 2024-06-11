@@ -1,7 +1,5 @@
 function Deposit() {
   const [status, setStatus] = React.useState("");
-  const [show, setShow] = React.useState(true);
-  //   const { login } = React.useContext(UserContext);
   const { user } = React.useContext(UserContext);
   const [name, setName] = React.useState();
   const [password, setPassword] = React.useState("");
@@ -13,7 +11,7 @@ function Deposit() {
       <p>Context share {JSON.stringify(ctx)}</p>
 
       {user.auth ? (
-        <DepositAuth setShow={setShow} name={name} setStatus={setStatus} />
+        <DepositAuth  name={name} setStatus={setStatus} />
       ) : (
         <>
           <div className="container ">
@@ -55,7 +53,7 @@ function Deposit() {
 
 function DepositAuth() {
   const { user, logout } = React.useContext(UserContext);
-  const { display, setDisplay } = React.useState(true);
+  const [display, setDisplay] = React.useState(true);
   const [balance, setBalance] = React.useState(0);
   const [depositAmount, setDepositAmount] = React.useState("");
 
@@ -94,13 +92,16 @@ function DepositAuth() {
     // const balance = balancebefore + depositAmount;
     const totalBalanceSofar = parseInt(depositAmount) + parseInt(balance);
     setBalance(totalBalanceSofar);
-
-    const url = `/account/update/${email}/${amount}`;
+    setDisplay(false);
+    ctx.push({
+        balance: balance,
+      });
+    // const url = `/account/update/${email}/${amount}`;
   }
 
-  function clearForm(props) {
+  function clearForm() {
     setDepositAmount("");
-    props.setShow(true);
+    setDisplay(true);
   }
 
   return (
@@ -108,7 +109,7 @@ function DepositAuth() {
       <h1>Hello {user.name}!</h1>
       <CardPersonalized
         header=" Deposit "
-        text="Welcome to your Bank!"
+        text=""
         nameButton="Save"
         center="true"
         status={status}
@@ -116,21 +117,8 @@ function DepositAuth() {
           display ? (
             <>
               {" "}
-              <p>Your current balance is:</p>
-              <br />
-              <h3>${balance}</h3>
-              <br />
-              <div className="container text-center">
-                <div className="row">
-                  <div className="col">
-                    <h5>Balance</h5>
-                  </div>
-                  <div className="col">
-                    <h5>{"$ " + balance}</h5>
-                  </div>
-                </div>
-              </div>
-              Deposit Amount <br />
+
+              Deposit Amount: <br />
               <input
                 type="number"
                 className="form-control"
