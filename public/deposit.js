@@ -93,7 +93,7 @@ function DepositAuth() {
     // const balance = balancebefore + depositAmount;
     const totalBalanceSofar = parseInt(depositAmount) + parseInt(balance);
     setBalance(totalBalanceSofar);
-
+   
     var email = user.email;
     var amount = depositAmount;
     const url = `/account/update/${email}/${amount}`;
@@ -119,15 +119,16 @@ function DepositAuth() {
         console.log("data updated:" + JSON.stringify(userInfo)); // Now you have access to the data
         var name = userInfo.value.name; //it helps with the delay of usestate
         var balance = userInfo.value.balance;
+        
         setEmail(() => userInfo.value.email);
         setPassword(() => userInfo.value.password);
         setBalance(() => userInfo.value.balance);
         setName(() => userInfo.value.name);
         login(name, email, password, balance);
-        setDisplay(false);
+        
         setUser((prev) => ({ ...prev, balance: balance }));
         clearForm();
-        return;
+        return setDisplay(false);
       }
       setStatus(
         <>
@@ -139,6 +140,7 @@ function DepositAuth() {
       );
       setTimeout(() => setStatus(""), 3000);
     })();
+    setDisplay(false);
   }
 
   function clearForm() {
@@ -156,7 +158,7 @@ function DepositAuth() {
         center="true"
         status={status}
         body={
-          display ? (
+         display ? (
             <>
               {" "}
               <h1>Hello {user.name}!</h1>
