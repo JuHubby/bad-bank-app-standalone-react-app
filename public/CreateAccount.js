@@ -227,10 +227,9 @@ function CreateMsg(props) {
             </div>
           </div>
         </div>
-
+        <br />
         <div className="container text-center">
           <div className="row">
-            <br />
             <div className="col">
               <ButtonPersonalized
                 titleButton="Create Another Account"

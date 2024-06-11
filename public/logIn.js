@@ -179,7 +179,7 @@ function LogInAuth(props) {
             <div className="col-sm-6 mb-3 mb-sm-0">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Special title treatment</h5>
+                  <h5 className="card-title"></h5>
                   <DepositAuth />
                 </div>
               </div>
@@ -187,8 +187,8 @@ function LogInAuth(props) {
             <div className="col-sm-6">
               <div className="card">
                 <div className="card-body">
-                  <h5 className="card-title">Special title treatment</h5>
-                  aqui
+                  <h5 className="card-title"></h5>
+                  <WithdrawAuth/>
                 </div>
               </div>
             </div>
