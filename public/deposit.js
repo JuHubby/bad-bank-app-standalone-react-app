@@ -1,5 +1,4 @@
 function Deposit() {
-  const [status, setStatus] = React.useState("");
   const { user } = React.useContext(UserContext);
   const ctx = React.useContext(UserContext);
 
@@ -8,7 +7,7 @@ function Deposit() {
       <p>Context share {JSON.stringify(ctx)}</p>
 
       {user.auth ? (
-        <DepositAuth setStatus={setStatus} />
+        <DepositAuth />
       ) : (
         <>
           <div className="container ">
@@ -49,6 +48,7 @@ function Deposit() {
 }
 
 function DepositAuth() {
+  const [status, setStatus] = React.useState("");
   const { user, setUser } = React.useContext(UserContext);
   const [email, setEmail] = React.useState("");
   const { login } = React.useContext(UserContext);
@@ -58,31 +58,30 @@ function DepositAuth() {
   const [password, setPassword] = React.useState("");
   const [name, setName] = React.useState();
 
-
-  function validate(field, label, props) {
+  function validate(field, label) {
     if (!field) {
-      props.setStatus(
+      setStatus(
         <span className="alert alert-danger d-flex align-items-center">
           {" "}
-          Holy guacamole! You should select or type an ammount on the {
+          Holy guacamole! You should select or type an amount on the {
             label
           }{" "}
           field above.
         </span>
       );
-      setTimeout(() => props.setStatus(""), 3000);
+      setTimeout(() => setStatus(""), 3000);
 
       return false;
     }
     if (field <= 0) {
-      props.setStatus(
+      setStatus(
         <span className="alert alert-danger d-flex align-items-center">
           {" "}
           Ups! You're not able to deposit a negative amount. Please choose a
           positive number.
         </span>
       );
-      setTimeout(() => props.setStatus(""), 3000);
+      setTimeout(() => setStatus(""), 3000);
       return false;
     }
     return true;
@@ -124,13 +123,13 @@ function DepositAuth() {
         setPassword(() => userInfo.value.password);
         setBalance(() => userInfo.value.balance);
         setName(() => userInfo.value.name);
-        login(name, email, password, balance );
-        setDisplay(false);        
+        login(name, email, password, balance);
+        setDisplay(false);
         setUser((prev) => ({ ...prev, balance: balance }));
         clearForm();
         return;
       }
-      props.setStatus(
+      setStatus(
         <>
           <span className="alert alert-danger d-flex align-items-center">
             {" "}
@@ -138,7 +137,7 @@ function DepositAuth() {
           </span>
         </>
       );
-      setTimeout(() => props.setStatus(""), 3000);
+      setTimeout(() => setStatus(""), 3000);
     })();
   }
 
