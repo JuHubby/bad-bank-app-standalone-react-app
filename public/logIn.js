@@ -2,7 +2,7 @@ function Login() {
   const { useEffect } = React;
   const [data, setData] = React.useState("");
   const [status, setStatus] = React.useState("");
-  const [balance, setBalance] = React.useState(100);
+  const [balance, setBalance] = React.useState(0);
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -53,12 +53,13 @@ function Login() {
       if (userData) {
         console.log("data updated:" + JSON.stringify(userData));
         var name = userData.name; //it helps with the delay of usestate
+        var balance = userData.balance;
         setStatus("");
         setEmail(() => userData.email);
         setPassword(() => userData.password);
         setBalance(() => userData.balance);
         setName(() => userData.name);
-        login(name, email, password);
+        login(name, email, password, balance );
         clearForm();
 
         return; //important
@@ -152,7 +153,7 @@ function LogInAuth(props) {
   const { user, logout } = React.useContext(UserContext);
   console.log(user.auth);
   console.log(user.name);
-  console.log(props.balance);
+
 
   return (
     <>
@@ -163,7 +164,7 @@ function LogInAuth(props) {
             <h5>Balance</h5>
           </div>
           <div className="col">
-            <h5>{"$ " + props.balance}</h5>
+            <h5>{"$ " + user.balance}</h5>
           </div>
         </div>
       </div>

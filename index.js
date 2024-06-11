@@ -91,6 +91,7 @@ app.get('/account/update/:email/:amount', function (req, res) {
 
   dal.update(req.params.email, amount).
       then((response) => {
+          console.log("Hi from update amount url back-end: " + response);
           console.log(response);
           res.send(response);
   });    

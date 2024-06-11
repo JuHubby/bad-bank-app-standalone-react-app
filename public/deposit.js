@@ -1,9 +1,6 @@
 function Deposit() {
   const [status, setStatus] = React.useState("");
   const { user } = React.useContext(UserContext);
-  const [name, setName] = React.useState();
-  const [password, setPassword] = React.useState("");
-  const [email, setEmail] = React.useState("");
   const ctx = React.useContext(UserContext);
 
   return (
@@ -11,7 +8,7 @@ function Deposit() {
       <p>Context share {JSON.stringify(ctx)}</p>
 
       {user.auth ? (
-        <DepositAuth  name={name} setStatus={setStatus} />
+        <DepositAuth setStatus={setStatus} />
       ) : (
         <>
           <div className="container ">
@@ -52,10 +49,15 @@ function Deposit() {
 }
 
 function DepositAuth() {
-  const { user, logout } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
+  const [email, setEmail] = React.useState("");
+  const { login } = React.useContext(UserContext);
   const [display, setDisplay] = React.useState(true);
   const [balance, setBalance] = React.useState(0);
-  const [depositAmount, setDepositAmount] = React.useState("");
+  const [depositAmount, setDepositAmount] = React.useState(0);
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState();
+
 
   function validate(field, label, props) {
     if (!field) {
@@ -92,11 +94,52 @@ function DepositAuth() {
     // const balance = balancebefore + depositAmount;
     const totalBalanceSofar = parseInt(depositAmount) + parseInt(balance);
     setBalance(totalBalanceSofar);
-    setDisplay(false);
-    ctx.push({
-        balance: balance,
-      });
-    // const url = `/account/update/${email}/${amount}`;
+
+    var email = user.email;
+    var amount = depositAmount;
+    const url = `/account/update/${email}/${amount}`;
+
+    const getUserUpdated = async () => {
+      try {
+        const response = await fetch(url);
+        if (response.status != 200) {
+          throw new Error(
+            `something went wrong, status code: ${response.status}`
+          );
+        }
+        const userInfo = await response.json();
+        return userInfo;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    (async () => {
+      const userInfo = await getUserUpdated();
+      if (userInfo) {
+        console.log("data updated:" + JSON.stringify(userInfo)); // Now you have access to the data
+        var name = userInfo.value.name; //it helps with the delay of usestate
+        var balance = userInfo.value.balance;
+        setEmail(() => userInfo.value.email);
+        setPassword(() => userInfo.value.password);
+        setBalance(() => userInfo.value.balance);
+        setName(() => userInfo.value.name);
+        login(name, email, password, balance );
+        setDisplay(false);        
+        setUser((prev) => ({ ...prev, balance: balance }));
+        clearForm();
+        return;
+      }
+      props.setStatus(
+        <>
+          <span className="alert alert-danger d-flex align-items-center">
+            {" "}
+            <p> Error </p>
+          </span>
+        </>
+      );
+      setTimeout(() => props.setStatus(""), 3000);
+    })();
   }
 
   function clearForm() {
@@ -117,7 +160,17 @@ function DepositAuth() {
           display ? (
             <>
               {" "}
-
+              <h1>Hello {user.name}!</h1>
+              <div className="container text-center">
+                <div className="row">
+                  <div className="col">
+                    <h5>Balance</h5>
+                  </div>
+                  <div className="col">
+                    <h5>{"$ " + user.balance}</h5>
+                  </div>
+                </div>
+              </div>
               Deposit Amount: <br />
               <input
                 type="number"
@@ -153,7 +206,7 @@ function DepositAuth() {
                     <h5>Your new balance is:</h5>
                   </div>
                   <div className="col">
-                    <h5>{"$ " + balance}</h5>
+                    <h5>{"$ " + user.balance}</h5>
                   </div>
                 </div>
               </div>

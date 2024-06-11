@@ -25,7 +25,7 @@ const logout = () => {
     return  (
         <HashRouter>
             <NavBar/>
-            <UserContext.Provider value={{ user, login, logout }}>
+            <UserContext.Provider value={{ user, setUser, login, logout }}>
                 <Route path="/" exact component={Home}/>
                 <Route path="/CreateAccount/" component={CreateAccount}/>
                 <Route path="/login/" component={Login}/>
